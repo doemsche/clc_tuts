@@ -9,6 +9,12 @@ namespace Renderering1{
 			float sinZ = Mathf.Sin(radZ);
 			float cosZ = Mathf.Cos(radZ);
 
+			point = new Vector3(
+				cosZ * point.x - sinZ * point.y,
+				sinZ * point.x + cosZ * point.y,
+				point.z
+			);
+
 			return point;
 		}
 	}
