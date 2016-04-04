@@ -12,34 +12,17 @@ namespace Renderering1{
 		List<Transformation> transformations;
 
 		void Awake(){
-			transformations = new List<Transformation>();
+			
 			grid = new Transform[gridResolution * gridResolution * gridResolution];
 			for(int i = 0, z = 0; z < gridResolution; z++){
 				for(int y = 0; y < gridResolution; y++){
-					for(int x = 0; x < gridResolution; x++){
+					for(int x = 0; x < gridResolution; x++, i++){
 						grid[i] = CreateGridPoint(x,y,z);
 					}
 				}
 			}
-		}
 
-		void Update(){
-			GetComponents<Transformation>(transformations);
-			for(int i = 0, z = 0; z < gridResolution; z++){
-				for(int y = 0; y < gridResolution; y++){
-					for(int x = 0; x < gridResolution; x++){
-						grid[i].localPosition = TransformPoint(x,y,z);
-					}
-				}
-			}
-		}
-
-		Vector3 TransformPoint(int x, int y, int z){
-			Vector3 coordinates = GetCoordinates(x,y,z);
-			for(int i = 0; i < transformations.Count; i++){
-				coordinates = transformations[i].Apply(coordinates);
-			}
-			return coordinates;
+			transformations = new List<Transformation>();
 		}
 
 		Transform CreateGridPoint(int x, int y, int z){
@@ -60,6 +43,25 @@ namespace Renderering1{
 				y - (gridResolution -1) * 0.5f,
 				z - (gridResolution -1) * 0.5f
 			);
+		}
+
+		void Update(){
+			GetComponents<Transformation>(transformations);
+			for(int i = 0, z = 0; z < gridResolution; z++){
+				for(int y = 0; y < gridResolution; y++){
+					for(int x = 0; x < gridResolution; x++, i++){
+						grid[i].localPosition = TransformPoint(x,y,z);
+					}
+				}
+			}
+		}
+
+		Vector3 TransformPoint(int x, int y, int z){
+			Vector3 coordinates = GetCoordinates(x,y,z);
+			for(int i = 0; i < transformations.Count; i++){
+				coordinates = transformations[i].Apply(coordinates);
+			}
+			return coordinates;
 		}
 	}
 }
